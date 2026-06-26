@@ -410,6 +410,12 @@ export class CopilotSessionLauncher implements ICopilotSessionLauncher {
 			// session must opt in via `remoteSession` to actually export
 			// events. Without this, sessions default to "off".
 			remoteSession: this._configurationService.getRootValue(platformRootSchema, AgentHostSessionSyncEnabledConfigKey) === true ? 'export' : undefined,
+			// Opt the runtime into self-fetching enterprise managed settings
+			// (bypass-permissions policy) at session bootstrap. The runtime uses
+			// the session's gitHubToken to call /copilot_internal/managed_settings
+			// and enforces the result fail-closed before the first turn.
+			// Declared in copilotSdkAugmentation.d.ts pending SDK type update.
+			selfFetchManagedSettings: true,
 		};
 	}
 }
